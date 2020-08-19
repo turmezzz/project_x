@@ -4,9 +4,12 @@ this main.py file is fo testing and debugging
 
 import PIL.Image
 import numpy as np
+import matplotlib.pyplot as plt
 
 from detector import Detector
 from mrcnn import _visualize
+from image_processor import apply_effect_to_img
+from effects.utils import get_contours, get_blurred_masks, get_overall_mask
 
 
 def convert_for_visualizer(results):
@@ -44,18 +47,28 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-file_path = '/Users/turmezzz/Desktop/ira.png'
+file_path = '/Users/berta/Desktop/ira.png'
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert('RGB')
 rgb_image = np.asarray(rgb_image)
 
-detector = Detector(0.5)
+detector = Detector(threshold=0.5)
 box = convert_for_visualizer(detector.detect_image(rgb_image))
-if len(box) != 0:
-    _visualize.display_instances(rgb_image,
-                                 box[0],
-                                 box[1],
-                                 box[2],
-                                 class_names,
-                                 box[3])
+
+contour_barier = 0.01
+contours = get_contours(box[1], gaussian_sigma=12, contour_barier=contour_barier)  # contours[i] = [y, x]
+
+params = {'contours': contours, 'background': None, 'line_width': 10, 'barier': 0.5}
+
+new_img = apply_effect_to_img(rgb_image, 'line_effect', params)
+
+
+# box = convert_for_visualizer(detector.detect_image(rgb_image))
+# if len(box) != 0:
+#     _visualize.display_instances(rgb_image,
+#                                  box[0],
+#                                  box[1],
+#                                  box[2],
+#                                  class_names,
+#                                  box[3])
