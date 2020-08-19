@@ -1,3 +1,7 @@
+from matplotlib import use
+use('agg')
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 from effects.utils import apply_mask
@@ -25,7 +29,7 @@ class LineEffect:
         #     image_size = 300
         #     dpi = rgb_image.shape[1] * 2.54 / image_size
         #     _, ax = plt.subplots(1, figsize=(rgb_image.shape[0] / dpi ,rgb_image.shape[1] / dpi))
-        _, ax = plt.subplots(1, figsize=(16, 16))
+        fig, ax = plt.subplots(1, figsize=(16, 16))
         height, width = img.shape[:2]
         ax.set_ylim(height + 10, -10)
         ax.set_xlim(-10, width + 10)
@@ -44,14 +48,10 @@ class LineEffect:
             print(background.shape)
             masked_image = apply_mask(masked_image, background, color=(1, 1, 0), alpha=1.0, barier=barier)
 
-        # return masked_image.astype(np.uint8)
-        # ax.imshow(masked_image.astype(np.uint8))
+        ax.imshow(masked_image.astype(np.uint8))
 
-        # plt.savefig('hot.png', format='png')
-        # return ax.gcf()
+        fig.canvas.draw()
 
-        plt.figimage(masked_image.astype(np.uint8))
-
-        data = np.fromstring(plt.figure().canvas.tostring_rgb(), dtype=np.uint8, sep='')
-        data = data.reshape(plt.figure().canvas.get_width_height()[::-1] + (3,))
+        data = np.fromstring(fig.canvas.tostring_rgb(), dtype=np.uint8, sep='')
+        data = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
         return data

@@ -47,7 +47,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-file_path = '/Users/berta/Desktop/ira.png'
+file_path = '/Users/turmezzz/Desktop/ira.png'
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert('RGB')
@@ -62,6 +62,9 @@ contours = get_contours(box[1], gaussian_sigma=12, contour_barier=contour_barier
 params = {'contours': contours, 'background': None, 'line_width': 10, 'barier': 0.5}
 
 new_img = apply_effect_to_img(rgb_image, 'line_effect', params)
+
+im = PIL.Image.fromarray(new_img)
+im.save('/Users/turmezzz/Desktop/new.png')
 
 
 # box = convert_for_visualizer(detector.detect_image(rgb_image))
