@@ -1,7 +1,3 @@
-from matplotlib import use
-use('agg')
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 from effects.utils import apply_mask
@@ -39,7 +35,7 @@ class LineEffect:
         # Contour
         masked_image = img.astype(np.uint32).copy()
         for verts in contours:
-            verts = np.fliplr(verts) - 1  # verts = [x, y]
+            verts = np.fliplr(verts) - 1
             p = Polygon(verts, facecolor="none", edgecolor='w', lw=line_width, closed=False, ls='-.', snap=False)
             ax.add_patch(p)
 
