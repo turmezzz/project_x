@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from effects.utils import apply_mask
+from effects.utils import get_dpi
 
 from matplotlib.patches import Polygon
 
@@ -22,32 +23,24 @@ class LineEffect:
         line_width = params['line_width']
         barier = params['barier']
 
-        #     image_size = 300
-        #     dpi = rgb_image.shape[1] * 2.54 / image_size
-        #     _, ax = plt.subplots(1, figsize=(rgb_image.shape[0] / dpi ,rgb_image.shape[1] / dpi))
-        fig, ax = plt.subplots(1, figsize=(16, 16))
-        height, width = img.shape[:2]
-        ax.set_ylim(height + 10, -10)
-        ax.set_xlim(-10, width + 10)
+        my_dpi = get_dpi()
+        fig, ax = plt.subplots(1, figsize=(img.shape[1] / my_dpi, img.shape[0] / my_dpi), dpi=my_dpi)
         ax.axis('off')
-        ax.set_title("")
 
         # Contour
         masked_image = img.astype(np.uint32).copy()
         for verts in contours:
-            verts = np.fliplr(verts) - 1
-            p = Polygon(verts, facecolor="none", edgecolor='w', lw=line_width, closed=False, ls='-.', snap=False)
+            verts = np.fliplr(verts) - 1  # verts = [x, y]
+            p = Polygon(verts, facecolor="none", edgecolor='w', lw=line_width, closed=False, ls='-', snap=False)
             ax.add_patch(p)
 
         # Background
         if background is not None:
-            print(background.shape)
             masked_image = apply_mask(masked_image, background, color=(1, 1, 0), alpha=1.0, barier=barier)
+        ax.imshow(masked_image.astype(np.uint8), aspect='auto')
+        plt.subplots_adjust(top=1, bottom=0, right=1, left=0,
+                            hspace=0, wspace=0)
+        s, (width, height) = fig.canvas.print_to_buffer()
 
-        ax.imshow(masked_image.astype(np.uint8))
-
-        fig.canvas.draw()
-
-        data = np.fromstring(fig.canvas.tostring_rgb(), dtype=np.uint8, sep='')
-        data = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+        data = np.frombuffer(s, np.uint8).reshape((height, width, 4))
         return data

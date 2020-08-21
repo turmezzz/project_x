@@ -47,7 +47,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-file_path = '/Users/turmezzz/Desktop/ira.png'
+file_path = '/Users/berta/Desktop/ira1.jpg'
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert('RGB')
@@ -64,14 +64,4 @@ params = {'contours': contours, 'background': None, 'line_width': 10, 'barier': 
 new_img = apply_effect_to_img(rgb_image, 'line_effect', params)
 
 im = PIL.Image.fromarray(new_img)
-im.save('/Users/turmezzz/Desktop/new.png')
-
-
-# box = convert_for_visualizer(detector.detect_image(rgb_image))
-# if len(box) != 0:
-#     _visualize.display_instances(rgb_image,
-#                                  box[0],
-#                                  box[1],
-#                                  box[2],
-#                                  class_names,
-#                                  box[3])
+im.save('/Users/berta/Desktop/new.png')

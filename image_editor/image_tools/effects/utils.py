@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 
 from scipy.ndimage.filters import gaussian_filter
 from skimage.measure import find_contours
@@ -34,3 +35,8 @@ def get_overall_mask(all_masks):
         common_mask += all_masks[..., i]
     common_mask = np.clip(common_mask, 0., 1.)
     return np.expand_dims(common_mask, axis=2)
+
+def get_dpi ():
+    fig0 = plt.figure()
+    my_dpi = fig0.dpi
+    return my_dpi
