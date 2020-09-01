@@ -4,12 +4,12 @@ this main.py file is fo testing and debugging
 
 import PIL.Image
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
-from detector import Detector
-from mrcnn import _visualize
-from image_processor import apply_effect_to_img
-from effects.utils import get_contours, get_blurred_masks, get_overall_mask
+from image_editor.image_tools.detector import Detector
+# from image_editor.image_tools.mrcnn import _visualize
+from image_editor.image_tools.image_processor import apply_effect_to_img
+from image_editor.image_tools.effects.utils import get_contours, get_blurred_masks, get_overall_mask
 
 
 def convert_for_visualizer(results):
@@ -47,7 +47,7 @@ class_names = ['BG', 'person', 'bicycle', 'car', 'motorcycle', 'airplane',
                'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors',
                'teddy bear', 'hair drier', 'toothbrush']
 
-file_path = '/Users/berta/Desktop/ira1.jpg'
+file_path = '/Users/turmezzz/Desktop/ira.png'
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert('RGB')
@@ -56,12 +56,19 @@ rgb_image = np.asarray(rgb_image)
 detector = Detector(threshold=0.5)
 box = convert_for_visualizer(detector.detect_image(rgb_image))
 
-contour_barier = 0.01
-contours = get_contours(box[1], gaussian_sigma=12, contour_barier=contour_barier)  # contours[i] = [y, x]
+effect_type = 'line_effect'
+background = None
+line_width = 10
+barrier = 0.5
+contour_barrier = 0.01
+gaussian_sigma = 12
+mask = box[1]
 
-params = {'contours': contours, 'background': None, 'line_width': 10, 'barier': 0.5}
+params = {'effect_type': effect_type, 'background': background,
+          'line_width': line_width, 'barrier': barrier,
+          'gaussian_sigma': gaussian_sigma, 'contour_barrier': contour_barrier,}
 
-new_img = apply_effect_to_img(rgb_image, 'line_effect', params)
+new_img = apply_effect_to_img(rgb_image, mask, params)
 
 im = PIL.Image.fromarray(new_img)
-im.save('/Users/berta/Desktop/new.png')
+im.save('/Users/turmezzz/Desktop/new.png')

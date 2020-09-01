@@ -3,11 +3,11 @@ import sys
 
 import numpy as np
 
-import mrcnn._coco as coco
-import mrcnn._model as modellib
+import image_editor.image_tools.mrcnn._coco as coco
+import image_editor.image_tools.mrcnn._model as modellib
 
 MODEL_DIR = "logs"
-COCO_MODEL_PATH = "mrcnn/weights/mask_rcnn_coco.h5"
+COCO_MODEL_PATH = "image_editor/image_tools/mrcnn/weights/mask_rcnn_coco.h5"
 
 if not os.path.exists(COCO_MODEL_PATH):
     print('error, no weights')

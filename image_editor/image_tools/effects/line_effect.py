@@ -1,13 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from effects.utils import apply_mask
-from effects.utils import get_dpi
+from image_editor.image_tools.effects.utils import apply_mask, get_dpi
 
 from matplotlib.patches import Polygon
 
 
 class LineEffect:
-    base_params_keys = ('contours', 'background', 'line_width', 'barier')
+    base_params_keys = ('contours', 'background', 'line_width', 'barrier')
 
     def check_params_keys(self, params_keys):
         for key in self.base_params_keys:
@@ -21,7 +20,7 @@ class LineEffect:
         contours = params['contours']
         background = params['background']
         line_width = params['line_width']
-        barier = params['barier']
+        barrier = params['barrier']
 
         my_dpi = get_dpi()
         fig, ax = plt.subplots(1, figsize=(img.shape[1] / my_dpi, img.shape[0] / my_dpi), dpi=my_dpi)
@@ -36,7 +35,7 @@ class LineEffect:
 
         # Background
         if background is not None:
-            masked_image = apply_mask(masked_image, background, color=(1, 1, 0), alpha=1.0, barier=barier)
+            masked_image = apply_mask(masked_image, background, color=(1, 1, 0), alpha=1.0, barrier=barrier)
         ax.imshow(masked_image.astype(np.uint8), aspect='auto')
         plt.subplots_adjust(top=1, bottom=0, right=1, left=0,
                             hspace=0, wspace=0)

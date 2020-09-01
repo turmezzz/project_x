@@ -9,12 +9,47 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Wake up, Neo...</title>
 </head>
 <body>
-<div style="text-align: center;">
-    <H1>Project_x</H1>
-</div>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+    <a class="navbar-brand text-light" href="https://github.com/turmezzz/project_x">Project_x</a>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="https://www.instagram.com/turmezzz/">@turmezzz</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="https://www.instagram.com/brtbtrzv/">@brtbtrzv</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-warning" href="https://www.instagram.com/vlhel/">@vlhel</a>
+            </li>
+        </ul>
+
+    </div>
+</nav>
+
+<form action="/home" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <label for="userImage">Load your image</label>
+        <input type="file" class="form-control-file" id="userImage" name="image">
+    </div>
+    <div class="form-group">
+        <label for="effectType">Choose effect</label>
+        <select class="form-control" id="effectType" name="effectType">
+            Here we need to add all effects using django templates
+            <option>Line effect</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="effectParams">Enter effect params</label>
+        <input class="form-control" id="effectParams" placeholder="{'line_width': 15, 'barrier': 0.5}">
+    </div>
+    <input type="submit" value="OK">
+</form>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
