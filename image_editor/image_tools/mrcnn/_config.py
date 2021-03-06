@@ -27,8 +27,8 @@ class Config(object):
     # NUMBER OF GPUs to use. When using only a CPU, this needs to be set to 1.
     GPU_COUNT = 1
 
-    # Number of images to train with on each GPU. A 12GB GPU can typically
-    # handle 2 images of 1024x1024px.
+    # Number of uploaded_images to train with on each GPU. A 12GB GPU can typically
+    # handle 2 uploaded_images of 1024x1024px.
     # Adjust based on your GPU memory and image sizes. Use the highest
     # number that your GPU can handle for best performance.
     IMAGES_PER_GPU = 2
@@ -99,16 +99,16 @@ class Config(object):
     POST_NMS_ROIS_INFERENCE = 1000
 
     # If enabled, resizes instance masks to a smaller size to reduce
-    # memory load. Recommended when using high-resolution images.
+    # memory load. Recommended when using high-resolution uploaded_images.
     USE_MINI_MASK = True
     MINI_MASK_SHAPE = (56, 56)  # (height, width) of the mini-mask
 
     # Input image resizing
     # Generally, use the "square" resizing mode for training and predicting
-    # and it should work well in most cases. In this mode, images are scaled
+    # and it should work well in most cases. In this mode, uploaded_images are scaled
     # up such that the small side is = IMAGE_MIN_DIM, but ensuring that the
     # scaling doesn't make the long side > IMAGE_MAX_DIM. Then the image is
-    # padded with zeros to make it a square so multiple images can be put
+    # padded with zeros to make it a square so multiple uploaded_images can be put
     # in one batch.
     # Available resizing modes:
     # none:   No resizing or padding. Return the image unchanged.
@@ -127,7 +127,7 @@ class Config(object):
     IMAGE_MIN_DIM = 800
     IMAGE_MAX_DIM = 1024
     # Minimum scaling ratio. Checked after MIN_IMAGE_DIM and can force further
-    # up scaling. For example, if set to 2 then images are scaled up to double
+    # up scaling. For example, if set to 2 then uploaded_images are scaled up to double
     # the width and height, or more, even if MIN_IMAGE_DIM doesn't require it.
     # However, in 'square' mode, it can be overruled by IMAGE_MAX_DIM.
     IMAGE_MIN_SCALE = 0

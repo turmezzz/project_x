@@ -33,10 +33,10 @@ from mrcnn import _utils
 
 def display_images(images, titles=None, cols=4, cmap=None, norm=None,
                    interpolation=None):
-    """Display the given set of images, optionally with titles.
-    images: list or array of image tensors in HWC format.
+    """Display the given set of uploaded_images, optionally with titles.
+    uploaded_images: list or array of image tensors in HWC format.
     titles: optional. A list of titles to display with each image.
-    cols: number of images per row
+    cols: number of uploaded_images per row
     cmap: Optional. Color map to use. For example, "Blues".
     norm: Optional. A Normalize instance to map values to colors.
     interpolation: Optional. Image interpolation to use for display.
@@ -290,7 +290,7 @@ def display_top_masks(image, mask, class_ids, class_names, limit=4):
                  for i in unique_class_ids]
     top_ids = [v[0] for v in sorted(zip(unique_class_ids, mask_area),
                                     key=lambda r: r[1], reverse=True) if v[1] > 0]
-    # Generate images and titles
+    # Generate uploaded_images and titles
     for i in range(limit):
         class_id = top_ids[i] if i < len(top_ids) else -1
         # Pull masks of instances belonging to the same class.

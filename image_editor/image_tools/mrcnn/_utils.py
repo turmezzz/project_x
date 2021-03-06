@@ -287,7 +287,7 @@ class Dataset(object):
         the image that help looking it up or debugging it.
 
         Override for your dataset, but pass to this function
-        if you encounter images not in your dataset.
+        if you encounter uploaded_images not in your dataset.
         """
         return ""
 

@@ -1,6 +1,5 @@
 import os
 import sys
-
 import numpy as np
 
 import image_editor.image_tools.mrcnn._coco as coco
