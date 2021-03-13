@@ -40,3 +40,18 @@ def get_dpi():
     fig0 = plt.figure()
     my_dpi = fig0.dpi
     return my_dpi
+
+
+def rgb_to_hex(rgb_color):
+    print(rgb_color)
+    r = hex(rgb_color[0])[2::].upper()
+    g = hex(rgb_color[1])[2::].upper()
+    b = hex(rgb_color[2])[2::].upper()
+
+    r = '0' * (2 - len(r)) + r
+    g = '0' * (2 - len(g)) + g
+    b = '0' * (2 - len(b)) + b
+
+    print(r, g, b)
+    return "#{}{}{}".format(r, g, b)
+

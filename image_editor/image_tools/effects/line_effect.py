@@ -4,26 +4,45 @@ import numpy as np
 from matplotlib.patches import Polygon
 
 from image_editor.image_tools.effects.utils import apply_mask, get_dpi
+from .utils import get_contours
 
 
 class LineEffect:
-    base_params_keys = ("contours",)
-    optional_params_values = {"background": None, "line_width": 10, "barrier": 0.5, "facecolor": "none",
-                              "line_color": "white", "line_style": "solid"}
+    """
+    Example:
+        {"background": None,
+        "line_width": 10,
+        "barrier": 0.5,
+        "gaussian_sigma": 10,
+        "contour_barrier": 0.01,
+        "line_color": "white",
+        "line_style": "solid",
+        "facecolor": "none"}
+    """
+    base_params_keys = tuple()
+    optional_params_values = {"gaussian_sigma": 10,
+                              "contour_barrier": 0.01,
+                              "background": None,
+                              "line_width": 10,
+                              "barrier": 0.5,
+                              "facecolor": "none",
+                              "line_color": "white",
+                              "line_style": "solid"}
 
     def check_params_keys(self, params_keys):
         for key in self.base_params_keys:
             if key not in params_keys:
                 raise Exception("Wrong line effect params")
 
-    def apply(self, img, params):
+    def apply(self, mask, img, params):
         # throws exception if params are wrong
         self.check_params_keys(params.keys())
 
-        # base params
-        contours = params["contours"]
-
         # optional params
+        gaussian_sigma = params["gaussian_sigma"] if "gaussian_sigma" in params else self.optional_params_values[
+            "gaussian_sigma"]
+        contour_barrier = params["contour_barrier"] if "contour_barrier" in params else self.optional_params_values[
+            "contour_barrier"]
         background = params["background"] if "background" in params else self.optional_params_values["background"]
         line_width = params["line_width"] if "line_width" in params else self.optional_params_values["line_width"]
         barrier = params["barrier"] if "barrier" in params else self.optional_params_values["barrier"]
@@ -36,6 +55,7 @@ class LineEffect:
         ax.axis("off")
 
         # Contour
+        contours = get_contours(mask, gaussian_sigma=gaussian_sigma, contour_barrier=contour_barrier)
         masked_image = img.astype(np.uint32).copy()
         for verts in contours:
             verts = np.fliplr(verts) - 1  # verts = [x, y]

@@ -11,5 +11,5 @@ class ImageForm(forms.ModelForm):
                        "contour_barrier": 0.01,
                        "line_color": "white", "line_style": "solid", "facecolor": "none"}
         widgets = {
-            "effect_params": forms.Textarea(attrs={"placeholder": str(placeholder)}),
+            "effect_params": forms.Textarea(attrs={"placeholder": str(placeholder), "maxlength": 10 * 1024}),
         }

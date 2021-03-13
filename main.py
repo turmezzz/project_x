@@ -27,22 +27,23 @@ class_names = ["BG", "person", "bicycle", "car", "motorcycle", "airplane",
                "sink", "refrigerator", "book", "clock", "vase", "scissors",
                "teddy bear", "hair drier", "toothbrush"]
 
-file_path = "/Users/turmetsmakoev/Desktop/trio.png"
+file_path = "/Users/turmetsmakoev/Desktop/_0j.jpg"
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert("RGB")
 rgb_image = np.asarray(rgb_image)
 
-detector = Detector(threshold=0.5)
-box = convert_for_visualizer(detector.detect_image(rgb_image))
+# detector = Detector(threshold=0.5)
+# box = convert_for_visualizer(detector.detect_image(rgb_image))
 
-effect_type = "line_effect"
+effect_type = "palette_rainbow_effect"
 background = None
 line_width = 10
 barrier = 0.5
 contour_barrier = 0.01
 gaussian_sigma = 12
-mask = box[1]
+# mask = box[1]
+mask = None
 
 params = {"effect_type": effect_type, "background": background,
           "line_width": line_width, "barrier": barrier,
@@ -50,5 +51,5 @@ params = {"effect_type": effect_type, "background": background,
 
 new_img = apply_effect_to_img(rgb_image, mask, params)
 
-im = PIL.Image.fromarray(new_img)
-im.save("/Users/turmetsmakoev/Desktop/out.png")
+# im = PIL.Image.fromarray(new_img)
+# im.save("/Users/turmetsmakoev/Desktop/out.png")
