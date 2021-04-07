@@ -15,8 +15,11 @@ def get_contours(masks, gaussian_sigma=5, contour_barrier=0.01):
     blurred_masks = get_blurred_masks(masks, gaussian_sigma)
     contours = []
     for i in range(masks.shape[2]):
-        contour = np.array(find_contours(blurred_masks[..., i], contour_barrier))[0]
-        contours.append(contour)
+        try:
+            contour = np.array(find_contours(blurred_masks[..., i], contour_barrier))[0]
+            contours.append(contour)
+        except:
+            pass
     return np.array(contours)
 
 
@@ -43,7 +46,6 @@ def get_dpi():
 
 
 def rgb_to_hex(rgb_color):
-    print(rgb_color)
     r = hex(rgb_color[0])[2::].upper()
     g = hex(rgb_color[1])[2::].upper()
     b = hex(rgb_color[2])[2::].upper()
@@ -51,7 +53,5 @@ def rgb_to_hex(rgb_color):
     r = '0' * (2 - len(r)) + r
     g = '0' * (2 - len(g)) + g
     b = '0' * (2 - len(b)) + b
-
-    print(r, g, b)
     return "#{}{}{}".format(r, g, b)
 

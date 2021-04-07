@@ -39,8 +39,9 @@ def home(request):
                     mask = convert_for_visualizer(pickle.load(f))[1]
                     print("mock loaded")
             else:
-                detector = Detector(threshold=0.5)
+                detector = Detector()
                 mask = convert_for_visualizer(detector.detect_image(rgb_image))[1]
+                print(len(mask))
             print("have mask")
 
             new_img = apply_effect_to_img(rgb_image, mask, effect_params)

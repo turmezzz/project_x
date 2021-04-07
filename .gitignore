@@ -6,6 +6,8 @@ results/
 temp/
 test/
 images
+media/uploaded_images/
+media/processed_images/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -62,3 +64,5 @@ ENV/
 images/.DS_Store
 *.DS_Store
 /image_editor/migrations/
+/media/uploaded_images/
+/media/uploaded_images/

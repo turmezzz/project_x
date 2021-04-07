@@ -34,7 +34,7 @@ class LineEffect:
             if key not in params_keys:
                 raise Exception("Wrong line effect params")
 
-    def apply(self, mask, img, params):
+    def apply(self, masks, img, params):
         # throws exception if params are wrong
         self.check_params_keys(params.keys())
 
@@ -55,7 +55,7 @@ class LineEffect:
         ax.axis("off")
 
         # Contour
-        contours = get_contours(mask, gaussian_sigma=gaussian_sigma, contour_barrier=contour_barrier)
+        contours = get_contours(masks, gaussian_sigma=gaussian_sigma, contour_barrier=contour_barrier)
         masked_image = img.astype(np.uint32).copy()
         for verts in contours:
             verts = np.fliplr(verts) - 1  # verts = [x, y]

@@ -51,6 +51,7 @@ class PaletteRainbowEffect:
             "line_style": "solid",
             "facecolor": "none",
         }
+        raw_params["palette_size"] = min(raw_params["palette_size"], len(palette_colors))
 
         gaussian_sigma_init = raw_params["gaussian_sigma_init"] if "gaussian_sigma_init" in raw_params else self.optional_params_values["gaussian_sigma_init"]
         gaussian_sigma_step = raw_params["gaussian_sigma_step"] if "gaussian_sigma_step" in raw_params else self.optional_params_values["gaussian_sigma_step"]
@@ -60,6 +61,7 @@ class PaletteRainbowEffect:
             params.append(copy(line_params))
             params[-1]["line_color"] = palette_colors[i]
             params[-1]["gaussian_sigma"] = gaussian_sigma_init + i * gaussian_sigma_step
+            params[-1]["line_width"] = raw_params["line_width"]
         return params
 
     def apply(self, mask, img, params):
