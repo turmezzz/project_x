@@ -26,7 +26,7 @@ def apply_effect_to_img(img, detection_result, params):
     squares.sort(key=lambda x: x[1])
     good_masks_ids = []
     max_square = 0
-    square_difference_coef = 2
+    square_difference_coef = 4
     for square, i in squares:
         if i == 0:
             good_masks_ids.append(i)

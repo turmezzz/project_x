@@ -27,7 +27,7 @@ class_names = ["BG", "person", "bicycle", "car", "motorcycle", "airplane",
                "sink", "refrigerator", "book", "clock", "vase", "scissors",
                "teddy bear", "hair drier", "toothbrush"]
 
-file_path = "/Users/turmetsmakoev/Desktop/n00.png"
+file_path = "/Users/turmetsmakoev/Desktop/test2.jpeg"
 
 raw_image = PIL.Image.open(file_path)
 rgb_image = raw_image.convert("RGB")
