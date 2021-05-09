@@ -7,7 +7,11 @@ from image_editor.image_tools.effects.utils import fill_background, get_dpi
 from .utils import get_contours
 
 
-class LineEffect:
+def get_alpha(neon_batches, neon_iteration):
+    return 1 / neon_batches
+
+
+class NeonLineEffect:
     """
     Example:
         {"background": None,
@@ -27,8 +31,7 @@ class LineEffect:
                               "barrier": 0.5,
                               "facecolor": "none",
                               "line_color": "white",
-                              "line_style": "solid",
-                              "line_alpha": 1}
+                              "line_style": "solid"}
 
     def check_params_keys(self, params_keys):
         for key in self.base_params_keys:
@@ -50,7 +53,6 @@ class LineEffect:
         facecolor = params["facecolor"] if "facecolor" in params else self.optional_params_values["facecolor"]
         line_color = params["line_color"] if "line_color" in params else self.optional_params_values["line_color"]
         line_style = params["line_style"] if "line_style" in params else self.optional_params_values["line_style"]
-        line_alpha = params["line_alpha"] if "line_alpha" in params else self.optional_params_values["line_alpha"]
 
         my_dpi = get_dpi()
         fig, ax = plt.subplots(1, figsize=(img.shape[1] / my_dpi, img.shape[0] / my_dpi), dpi=my_dpi)
@@ -58,10 +60,44 @@ class LineEffect:
 
         # Contour
         contours = get_contours(masks, gaussian_sigma=gaussian_sigma, contour_barrier=contour_barrier)
+
+        neon_batches = params["neon_batches"]
+
         for verts in contours:
             verts = np.fliplr(verts) - 1  # verts = [x, y]
-            p = Polygon(verts, facecolor=facecolor, edgecolor=line_color, lw=line_width, closed=False, ls=line_style,
-                        snap=False, alpha=line_alpha)
+            for neon_iteration in range(neon_batches):
+
+                local_alpha, local_line_width = get_alpha(neon_batches, neon_iteration), (line_width / neon_batches) * (neon_iteration + 1)
+
+                p = Polygon(verts,
+                            facecolor=facecolor,
+                            edgecolor=line_color,
+                            linewidth=local_line_width,
+                            closed=False,
+                            ls=line_style,
+                            snap=False,
+                            alpha=local_alpha)
+                ax.add_patch(p)
+            color_line_width = line_width * 0.05
+            p = Polygon(verts,
+                        facecolor=facecolor,
+                        edgecolor=line_color,
+                        linewidth=color_line_width,
+                        closed=False,
+                        ls=line_style,
+                        snap=False,
+                        alpha=1)
+            ax.add_patch(p)
+            white_line_width = line_width * 0.02
+            white_alpha = 0.9
+            p = Polygon(verts,
+                        facecolor=facecolor,
+                        edgecolor="white",
+                        linewidth=white_line_width,
+                        closed=False,
+                        ls=line_style,
+                        snap=False,
+                        alpha=white_alpha)
             ax.add_patch(p)
 
         # Background

@@ -1,9 +1,8 @@
 from django.db import models
 
 
-class Image(models.Model):
-    EFFECT_TYPES = (("line_effect", "Line effect"), ("rainbow_effect", "Rainbow effect"),
-                    ("palette_rainbow_effect", "Palette rainbow effect"))
-    effect_type = models.CharField(max_length=255, choices=EFFECT_TYPES, default="Line effect")
-    effect_params = models.CharField(max_length=10 * 1024)
+class LineEffect(models.Model):
     image = models.ImageField(upload_to="uploaded_images")
+    line_width = models.IntegerField()
+    line_indent = models.IntegerField()
+    line_color = models.CharField(default="#c8c8c8", max_length=7)

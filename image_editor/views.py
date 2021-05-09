@@ -1,58 +1,49 @@
 from django.shortcuts import render
 from project_x_web.settings import BASE_DIR
-from .forms import ImageForm
+from .forms import LineEffectForm
 
 import PIL.Image
 import numpy as np
-import os
-import pickle
+import random
 
 from image_editor.image_tools.detector import Detector
 from image_editor.image_tools.image_processor import apply_effect_to_img
 from image_editor.image_tools.tools import convert_for_visualizer
 
 
-def home(request):
+def line_effect(request):
     if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
+        form = LineEffectForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
 
             upload_image_path = form.instance.image.url
-            effect_type = form.instance.effect_type
-            effect_params = eval(form.instance.effect_params)
-            effect_params["effect_type"] = effect_type
-            print(effect_params)
+            line_width = form.instance.line_width
+            line_indent = form.instance.line_indent
+            line_color = form.instance.line_color
+            effect_params = {
+                "effect_type": "line_effect",
+                "line_width": line_width,
+                "gaussian_sigma": line_indent,
+                "line_color": line_color,
+            }
 
-            path = BASE_DIR + upload_image_path
-            print(os.path.abspath(__file__))
-            print(path)
+            file_path = BASE_DIR + upload_image_path
 
-            raw_image = PIL.Image.open(path)
+            raw_image = PIL.Image.open(file_path)
             rgb_image = raw_image.convert("RGB")
             rgb_image = np.asarray(rgb_image)
-            print("have rgb_image")
 
-            mock = False
-            if mock:
-                with open("mock.pickle", "rb") as f:
-                    mask = convert_for_visualizer(pickle.load(f))[1]
-                    print("mock loaded")
-            else:
-                detector = Detector()
-                mask = convert_for_visualizer(detector.detect_image(rgb_image))[1]
-                print(len(mask))
-            print("have mask")
+            detector = Detector()
+            detection_result = convert_for_visualizer(detector.detect_image(rgb_image))
 
-            new_img = apply_effect_to_img(rgb_image, mask, effect_params)
-            print("have applied effect")
+            new_img = apply_effect_to_img(rgb_image, detection_result, effect_params)
 
-            processed_image_path = "/Users/turmetsmakoev/Desktop/project_x_web/media/processed_images/out.png"
+            processed_image_path = "/media/processed_images/out_" + str(random.randint(1000, 9999)) + ".png"
             im = PIL.Image.fromarray(new_img)
-            im.save(processed_image_path)
-            print("have processed image")
+            im.save(BASE_DIR + processed_image_path)
 
-            return render(request, "home.html", {"form": form, "image_path": "/media/processed_images/out.png"})
+            return render(request, "line_effect.html", {"form": form, "image_path": processed_image_path})
     else:
-        form = ImageForm()
-    return render(request, "home.html", {"form": form})
+        form = LineEffectForm()
+    return render(request, "line_effect.html", {"form": form})

@@ -3,6 +3,8 @@ import numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from skimage.measure import find_contours
 
+from matplotlib.colors import to_rgb
+
 
 def get_blurred_masks(masks, gaussian_sigma):
     blurred_masks = np.zeros(masks.shape)
@@ -23,11 +25,15 @@ def get_contours(masks, gaussian_sigma=5, contour_barrier=0.01):
     return np.array(contours)
 
 
-def apply_mask(image, mask, color, alpha=0.5, barrier=0.5):
-    for c in range(3):
-        image[:, :, c] = np.where(mask >= barrier,
-                                  image[:, :, c] * (1 - alpha) + alpha * color[c] * 255,
-                                  image[:, :, c])
+def fill_background(image, masks, color, alpha=0.5, barrier=0.8):
+    if isinstance(color, str):
+        color = np.array(to_rgb(color))
+    mask = masks.max(2)
+    h, w = mask.shape
+    for j in range(h):
+        for i in range(w):
+            if mask[j, i] < barrier:
+                image[j, i] = image[j, i, :] * (1 - alpha) + alpha * color * 255
     return image
 
 

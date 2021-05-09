@@ -5,7 +5,7 @@ from copy import copy
 from colorific import palette
 from matplotlib.patches import Polygon
 
-from image_editor.image_tools.effects.utils import apply_mask, get_dpi, rgb_to_hex
+from image_editor.image_tools.effects.utils import fill_background, get_dpi, rgb_to_hex
 from .line_effect import LineEffect
 
 

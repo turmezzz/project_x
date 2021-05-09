@@ -3,7 +3,7 @@ import numpy as np
 
 from matplotlib.patches import Polygon
 
-from image_editor.image_tools.effects.utils import apply_mask, get_dpi
+from image_editor.image_tools.effects.utils import fill_background, get_dpi
 from .line_effect import LineEffect
 
 
