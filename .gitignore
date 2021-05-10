@@ -63,6 +63,7 @@ ENV/
 
 images/.DS_Store
 *.DS_Store
-/image_editor/migrations/
+/image_editor/migrations_/
 /media/uploaded_images/
 /media/uploaded_images/
+/db.sqlite3
