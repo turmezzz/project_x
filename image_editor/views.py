@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from project_x_web.settings import BASE_DIR
-from .forms import LineEffectForm, BackgroundFillingEffectForm
+from .forms import LineEffectForm, BackgroundFillingEffectForm, NeonLineEffectForm, PaletteRainbowEffectForm
 
 import PIL.Image
 import numpy as np
@@ -66,12 +66,15 @@ def background_filling_effect(request):
             line_indent = form.instance.line_indent
             line_color = form.instance.line_color
             background_color = form.instance.background_color
+            apply_bw_filter = form.instance.apply_bw_filter
             effect_params = {
                 "effect_type": "background_filling_effect",
                 "line_width": line_width,
-                "gaussian_sigma": line_indent,
+                "gaussian_sigma": 1,
                 "line_color": line_color,
-                "background_color": background_color
+                "background_color": background_color,
+                "mask_conv_kernel_size": 2 * line_indent + 1,
+                "apply_bw_filter_to_inline": apply_bw_filter
             }
 
             processed_image_path = process_image(upload_image_path, effect_params)
@@ -80,3 +83,56 @@ def background_filling_effect(request):
     else:
         form = BackgroundFillingEffectForm()
     return render(request, "background_filling_effect.html", {"form": form})
+
+
+def neon_line_effect(request):
+    if request.method == "POST":
+        form = NeonLineEffectForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+            upload_image_path = form.instance.image.url
+            line_width = form.instance.line_width
+            line_indent = form.instance.line_indent
+            line_color = form.instance.line_color
+            neon_rate = form.instance.neon_rate
+            effect_params = {
+                "effect_type": "neon_line_effect",
+                "line_width": line_width,
+                "gaussian_sigma": line_indent,
+                "line_color": line_color,
+                "neon_rate": neon_rate,
+            }
+
+            processed_image_path = process_image(upload_image_path, effect_params)
+
+            return render(request, "neon_line_effect.html", {"form": form, "image_path": processed_image_path})
+    else:
+        form = NeonLineEffectForm()
+    return render(request, "neon_line_effect.html", {"form": form})
+
+
+def palette_rainbow_effect(request):
+    if request.method == "POST":
+        form = PaletteRainbowEffectForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+
+            upload_image_path = form.instance.image.url
+            line_width = form.instance.line_width
+            line_indent = form.instance.line_indent
+            palette_size = form.instance.palette_size
+            effect_params = {
+                "effect_type": "palette_rainbow_effect",
+                "line_width": line_width,
+                "gaussian_sigma_init": line_indent,
+                "gaussian_sigma_step": line_indent,
+                "palette_size": palette_size,
+            }
+
+            processed_image_path = process_image(upload_image_path, effect_params)
+
+            return render(request, "palette_rainbow_effect.html", {"form": form, "image_path": processed_image_path})
+    else:
+        form = PaletteRainbowEffectForm()
+    return render(request, "palette_rainbow_effect.html", {"form": form})

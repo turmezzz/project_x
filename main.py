@@ -36,21 +36,30 @@ rgb_image = np.asarray(rgb_image)
 detector = Detector(threshold=0.5)
 detection_result = convert_for_visualizer(detector.detect_image(rgb_image))
 
-params = {
-            "effect_type": "neon_line_effect",
-            # "effect_type": "line_effect",
-            "line_width": 200,
-            "barrier": 0.8,
-            "gaussian_sigma": 30,
-            "contour_barrier": 0.01,
-            "line_color": "green",
-            "line_style": "solid",
-            "neon_batches": 100,
-            # "mask_conv_kernel_size": 15
-        }
+# params = {
+#             # "effect_type": "neon_line_effect",
+#             "effect_type": "line_effect",
+#             "line_width": 20,
+#             "barrier": 0.8,
+#             "gaussian_sigma": 30,
+#             "contour_barrier": 0.01,
+#             "line_color": "green",
+#             "line_style": "solid",
+#             # "neon_rate": 100,
+#             "mask_conv_kernel_size": 15
+#         }
+
+effect_params = {
+                "effect_type": "background_filling_effect",
+                "line_width": 20,
+                "gaussian_sigma": 30,
+                "line_color": "green",
+                "background_color": "black",
+                "mask_conv_kernel_size": 101
+            }
 
 
-new_img = apply_effect_to_img(rgb_image, detection_result, params)
+new_img = apply_effect_to_img(rgb_image, detection_result, effect_params)
 
 im = PIL.Image.fromarray(new_img)
 im.save("/Users/turmetsmakoev/Desktop/out.png")

@@ -1,6 +1,6 @@
 import numpy as np
 
-from scipy.signal import convolve2d
+from skimage.morphology import dilation
 
 from .effects.line_effect import LineEffect
 from .effects.rainbow_effect import RainbowEffect
@@ -46,7 +46,7 @@ def apply_effect_to_img(img, detection_result, params):
     kernel = None if kernel_size <= 0 else np.ones((kernel_size, kernel_size))
     for i in good_masks_ids:
         if kernel is not None:
-            good_masks.append(convolve2d(all_masks[::, ::, i], kernel, mode='same'))
+            good_masks.append(dilation(all_masks[::, ::, i], kernel))
         else:
             good_masks.append(all_masks[::, ::, i])
     good_masks = np.dstack(good_masks)

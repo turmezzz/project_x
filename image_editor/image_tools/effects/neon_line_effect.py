@@ -7,8 +7,8 @@ from image_editor.image_tools.effects.utils import fill_background, get_dpi
 from .utils import get_contours
 
 
-def get_alpha(neon_batches, neon_iteration):
-    return 1 / neon_batches
+def get_alpha(neon_rate, neon_iteration):
+    return 1 / neon_rate
 
 
 class NeonLineEffect:
@@ -61,13 +61,13 @@ class NeonLineEffect:
         # Contour
         contours = get_contours(masks, gaussian_sigma=gaussian_sigma, contour_barrier=contour_barrier)
 
-        neon_batches = params["neon_batches"]
+        neon_rate = params["neon_rate"]
 
         for verts in contours:
             verts = np.fliplr(verts) - 1  # verts = [x, y]
-            for neon_iteration in range(neon_batches):
+            for neon_iteration in range(neon_rate):
 
-                local_alpha, local_line_width = get_alpha(neon_batches, neon_iteration), (line_width / neon_batches) * (neon_iteration + 1)
+                local_alpha, local_line_width = get_alpha(neon_rate, neon_iteration), (line_width / neon_rate) * (neon_iteration + 1)
 
                 p = Polygon(verts,
                             facecolor=facecolor,

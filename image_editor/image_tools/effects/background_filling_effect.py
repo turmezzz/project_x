@@ -1,5 +1,5 @@
 from .line_effect import LineEffect
-
+from PIL import Image
 
 class BackgroundFillingEffect:
     """
@@ -34,5 +34,19 @@ class BackgroundFillingEffect:
         # throws exception if params are wrong
         self.check_params_keys(params.keys())
 
+        if "apply_bw_filter_to_inline" in params and params["apply_bw_filter_to_inline"]:
+            inline = params["apply_bw_filter_to_inline"]
+            bw_img = img.copy()
+            h, w, d = mask.shape
+            for j in range(h):
+                for i in range(w):
+                    for k in range(d):
+                        if mask[j, i, k] == 1:
+                            if inline:
+                                box = sum(bw_img[j, i]) / 3
+                                bw_img[j, i] = (box, box, box)
+        else:
+            bw_img = img
+
         line_effect = LineEffect()
-        return line_effect.apply(mask, img, params)
+        return line_effect.apply(mask, bw_img, params)

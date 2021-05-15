@@ -65,8 +65,6 @@ class PaletteRainbowEffect:
         return params
 
     def apply(self, mask, img, params):
-        print(params)
-
         # throws exception if params are wrong
         self.check_params_keys(params.keys())
 
