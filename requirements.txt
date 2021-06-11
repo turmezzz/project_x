@@ -13,7 +13,7 @@ IPython[all]
 pandas==0.20.3
 seaborn==0.8
 pywavelets==0.5.2
-Django==2.1.4
+Django==2.2.24
 pycocotools~=2.0
 colorific~=0.3
 pip~=20.3.3
